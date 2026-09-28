@@ -1,0 +1,6 @@
+{
+  "name": "IronForge",
+  "description": "Smart Gym Workout Tracker with KPI performance metrics, adaptive trend graphs, and glassmorphism styling.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
