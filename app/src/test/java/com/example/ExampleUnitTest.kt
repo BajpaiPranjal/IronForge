@@ -95,4 +95,53 @@ class ExampleUnitTest {
             assertNotNull(pts)
         }
     }
+
+    @Test
+    fun testSixThemesConfigured() {
+        val modes = com.example.workouttracker.ui.theme.IronForgeThemeMode.values()
+        assertEquals(6, modes.size)
+        modes.forEach { mode ->
+            val colors = com.example.workouttracker.ui.theme.getGlassColors(mode)
+            assertEquals(mode, colors.mode)
+        }
+    }
+
+    @Test
+    fun testCalendarHeatmapIntensityScaling() {
+        val cal = java.util.Calendar.getInstance().apply {
+            set(java.util.Calendar.YEAR, 2026)
+            set(java.util.Calendar.MONTH, java.util.Calendar.OCTOBER)
+            set(java.util.Calendar.HOUR_OF_DAY, 12)
+            set(java.util.Calendar.MINUTE, 0)
+            set(java.util.Calendar.SECOND, 0)
+            set(java.util.Calendar.MILLISECOND, 0)
+        }
+
+        cal.set(java.util.Calendar.DAY_OF_MONTH, 5)
+        val day5Ts = cal.timeInMillis
+
+        cal.set(java.util.Calendar.DAY_OF_MONTH, 12)
+        val day12Ts = cal.timeInMillis
+
+        cal.set(java.util.Calendar.DAY_OF_MONTH, 20)
+        val day20Ts = cal.timeInMillis
+
+        val logs = listOf(
+            WorkoutLog(id = 1, exerciseId = 1, timestamp = day5Ts, fieldValues = listOf(40f, 5f), kpi = 200f),
+            WorkoutLog(id = 2, exerciseId = 1, timestamp = day12Ts, fieldValues = listOf(60f, 10f), kpi = 600f),
+            WorkoutLog(id = 3, exerciseId = 1, timestamp = day20Ts, fieldValues = listOf(100f, 10f), kpi = 1000f)
+        )
+
+        val stats = com.example.workouttracker.ui.components.CalendarHeatmapProcessor.buildMonthStats(
+            year = 2026,
+            month = java.util.Calendar.OCTOBER,
+            logs = logs,
+            isExerciseSpecific = true
+        )
+
+        assertEquals(3, stats.size)
+        assertEquals(com.example.workouttracker.ui.components.FireIntensityTier.LOW, stats[5]?.tier)
+        assertEquals(com.example.workouttracker.ui.components.FireIntensityTier.MODERATE, stats[12]?.tier)
+        assertEquals(com.example.workouttracker.ui.components.FireIntensityTier.HIGH_PR, stats[20]?.tier)
+    }
 }

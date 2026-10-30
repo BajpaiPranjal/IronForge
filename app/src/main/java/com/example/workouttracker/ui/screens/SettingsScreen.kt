@@ -87,7 +87,7 @@ fun SettingsScreen(
                 )
             }
 
-            // Theme Selection Section (4 Glassmorphism themes)
+            // Theme Selection Section (6 Glassmorphism themes)
             item {
                 GlassCard(modifier = Modifier.fillMaxWidth()) {
                     Column(modifier = Modifier.padding(16.dp)) {
@@ -100,7 +100,7 @@ fun SettingsScreen(
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = "Glassmorphism Themes",
+                                text = "Glassmorphism Themes (6)",
                                 color = glassColors.textPrimary,
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.Bold
@@ -378,7 +378,7 @@ private fun ThemeOptionRow(
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = if (isDark) "Dark Frosted Glass" else "Light Frosted Glass",
+                        text = mode.subtitle,
                         color = if (isDark) Color.White.copy(alpha = 0.7f) else Color(0xFF333333),
                         fontSize = 11.sp
                     )

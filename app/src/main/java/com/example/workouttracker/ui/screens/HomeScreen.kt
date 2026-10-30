@@ -23,12 +23,12 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.TrendingUp
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.TrendingUp
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -58,6 +58,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.workouttracker.data.model.Exercise
 import com.example.workouttracker.data.model.WorkoutLog
+import com.example.workouttracker.ui.components.CalendarHeatmap
 import com.example.workouttracker.ui.components.GlassBadge
 import com.example.workouttracker.ui.components.GlassCard
 import com.example.workouttracker.ui.theme.LocalGlassColors
@@ -80,6 +81,10 @@ fun HomeScreen(
     val filteredExercises = remember(exercises, searchQuery) {
         if (searchQuery.isBlank()) exercises
         else exercises.filter { it.name.contains(searchQuery, ignoreCase = true) }
+    }
+
+    val exercisesById = remember(exercises) {
+        exercises.associateBy { it.id }
     }
 
     val totalSets = allLogs.size
@@ -168,6 +173,18 @@ fun HomeScreen(
                         }
                     }
                 }
+            }
+
+            // App-Level Calendar Heatmap on Dashboard
+            item {
+                CalendarHeatmap(
+                    title = "Consistency & Volume Heatmap",
+                    subtitle = "All exercises • Fire intensity scales with daily KPI volume",
+                    logs = allLogs,
+                    isExerciseSpecific = false,
+                    exercisesById = exercisesById,
+                    testTagPrefix = "dashboard_heatmap"
+                )
             }
 
             // Search Bar
@@ -482,7 +499,7 @@ private fun ExerciseItemCard(
                 if (topKpi > 0) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
-                            imageVector = Icons.Default.TrendingUp,
+                            imageVector = Icons.AutoMirrored.Filled.TrendingUp,
                             contentDescription = null,
                             tint = glassColors.primary,
                             modifier = Modifier.size(15.dp)

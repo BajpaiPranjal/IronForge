@@ -58,6 +58,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.workouttracker.data.model.Exercise
 import com.example.workouttracker.data.model.WorkoutLog
+import com.example.workouttracker.ui.components.CalendarHeatmap
 import com.example.workouttracker.ui.components.GlassBadge
 import com.example.workouttracker.ui.components.GlassCard
 import com.example.workouttracker.ui.components.PerformanceGraph
@@ -219,6 +220,18 @@ fun ExerciseDetailScreen(
                         modifier = Modifier.weight(1f)
                     )
                 }
+            }
+
+            // Exercise-Level Calendar Heatmap
+            item {
+                CalendarHeatmap(
+                    title = "${exercise.name} Heatmap",
+                    subtitle = "Glowing fire intensity scales with daily peak KPI (${exercise.formulaDisplay})",
+                    logs = logs,
+                    isExerciseSpecific = true,
+                    exercise = exercise,
+                    testTagPrefix = "exercise_heatmap"
+                )
             }
 
             // Log History Header
